@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UPI Payment</title>
   <style>
+    /* Existing styles remain unchanged */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -111,6 +112,7 @@
       <input type="number" id="amount" placeholder="Enter amount" min="1">
     </div>
     <button id="generateQRButton" class="btn">Generate QR Code</button>
+    <button id="payNowButton" class="btn">Pay Now</button>
 
     <!-- Screenshot Upload Section -->
     <div class="form-group">
@@ -130,6 +132,32 @@
   <a href="https://wa.me/918837438521" class="fab" target="_blank">📱</a>
 
   <script>
+    document.getElementById('generateQRButton').addEventListener('click', function() {
+      var amount = parseFloat(document.getElementById('amount').value);
+      if (!amount || amount < 1) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+
+      var formattedAmount = amount.toFixed(2); // Ensure two decimal places
+      alert('Generating QR Code for ₹' + formattedAmount);
+      // Logic to generate QR code with the specified amount
+      // Example: QR Code URL or function can go here
+    });
+
+    document.getElementById('payNowButton').addEventListener('click', function() {
+      var amount = parseFloat(document.getElementById('amount').value);
+      if (!amount || amount < 1) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+
+      var formattedAmount = amount.toFixed(2); // Ensure two decimal places
+      alert('Redirecting to payment gateway for ₹' + formattedAmount);
+      // Logic for payment gateway redirection can go here
+      // Example: Window.location.href or API call
+    });
+
     document.getElementById('uploadButton').addEventListener('click', function() {
       var name = document.getElementById('name').value;
       var screenshot = document.getElementById('screenshot').files[0];
