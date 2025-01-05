@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UPI Payment & UTR Verification</title>
+  <title>UPI Payment</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -112,63 +112,45 @@
     </div>
     <button id="generateQRButton" class="btn">Generate QR Code</button>
 
-    <!-- UTR Verification Section -->
-    <div class="form-group">
-      <label for="utr">Enter UTR/Transaction ID:</label>
-      <input type="text" id="utr" placeholder="Enter numeric transaction ID">
-    </div>
-    <button id="verifyTransactionButton" class="btn">Verify Transaction ID</button>
-
     <!-- Screenshot Upload Section -->
     <div class="form-group">
       <label for="name">Enter Your Name:</label>
       <input type="text" id="name" placeholder="Enter your name">
     </div>
     <div class="form-group">
-      <label for="screenshot">Upload Payment Screenshot:</label>
+      <label for="screenshot">Upload Screenshot:</label>
       <input type="file" id="screenshot" accept="image/*">
     </div>
-    <button id="uploadScreenshotButton" class="btn">Upload Screenshot</button>
-
-    <!-- WhatsApp FAB -->
-    <a href="https://wa.me/918837438521" class="fab" target="_blank">☎</a>
-
-    <!-- Popup Message -->
-    <div class="message-popup" id="popupMessage">Your transaction has been uploaded. We'll verify soon.</div>
+    <button id="uploadButton" class="btn">Upload Screenshot</button>
+    
+    <div id="message" class="message-popup"></div>
   </div>
 
+  <!-- WhatsApp FAB -->
+  <a href="https://wa.me/918837438521" class="fab" target="_blank">📱</a>
+
   <script>
-    // Store uploaded data locally
-    const uploadButton = document.getElementById("uploadScreenshotButton");
-    const popupMessage = document.getElementById("popupMessage");
-
-    uploadButton.addEventListener("click", () => {
-      const name = document.getElementById("name").value.trim();
-      const screenshotInput = document.getElementById("screenshot");
-      const file = screenshotInput.files[0];
-
-      if (!name || !file) {
-        alert("Please fill out all fields.");
+    document.getElementById('uploadButton').addEventListener('click', function() {
+      var name = document.getElementById('name').value;
+      var screenshot = document.getElementById('screenshot').files[0];
+      
+      if (!name || !screenshot) {
+        alert('Please enter your name and upload a screenshot.');
         return;
       }
 
-      // Convert the uploaded image to a base64 string
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const base64Image = e.target.result;
+      // Simulating upload process and showing popup message
+      var messagePopup = document.getElementById('message');
+      messagePopup.style.display = 'block';
+      messagePopup.innerHTML = 'Your transaction has been uploaded. We\'ll verify soon.';
 
-        // Save data in localStorage
-        const data = JSON.parse(localStorage.getItem("adminPanelData")) || [];
-        data.push({ name, screenshot: base64Image });
-        localStorage.setItem("adminPanelData", JSON.stringify(data));
-
-        // Show success popup
-        popupMessage.style.display = "block";
-        setTimeout(() => {
-          popupMessage.style.display = "none";
-        }, 3000);
-      };
-      reader.readAsDataURL(file);
+      // Simulate delay for upload
+      setTimeout(function() {
+        messagePopup.style.display = 'none';
+        
+        // Refresh the page immediately after upload (as per request)
+        window.location.reload();
+      }, 3000);
     });
   </script>
 </body>
