@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPI Payment & UTR Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #4CAF50;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    input[type="number"], input[type="text"], input[type="file"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      color: #fff;
+      background: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #45a049;
+    }
+
+    .fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .fab:hover {
+      transform: scale(1.1);
+    }
+
+    .message-popup {
+      display: none;
+      background: #4CAF50;
+      color: white;
+      padding: 10px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>UPI Payment</h1>
+
+    <!-- QR Code Section -->
+    <div class="form-group">
+      <label for="amount">Enter Amount (₹):</label>
+      <input type="number" id="amount" placeholder="Enter amount" min="1">
+    </div>
+    <button id="generateQRButton" class="btn">Generate QR Code</button>
+
+    <!-- UTR Verification Section -->
+    <div class="form-group">
+      <label for="utr">Enter UTR/Transaction ID:</label>
+      <input type="text" id="utr" placeholder="Enter numeric transaction ID">
+    </div>
+    <button id="verifyTransactionButton" class="btn">Verify Transaction ID</button>
+
+    <!-- Screenshot Upload Section -->
+    <div class="form-group">
+      <label for="name">Enter Your Name:</label>
+      <input type="text" id="name" placeholder="Enter your name">
+    </div>
+    <div class="form-group">
+      <label for="screenshot">Upload Payment Screenshot:</label>
+      <input type="file" id="screenshot" accept="image/*">
+    </div>
+    <button id="uploadScreenshotButton" class="btn">Upload Screenshot</button>
+
+    <!-- WhatsApp FAB -->
+    <a href="https://wa.me/918837438521" class="fab" target="_blank">☎</a>
+
+    <!-- Popup Message -->
+    <div class="message-popup" id="popupMessage">Your transaction has been uploaded. We'll verify soon.</div>
+  </div>
+
+  <script>
+    // Store uploaded data locally
+    const uploadButton = document.getElementById("uploadScreenshotButton");
+    const popupMessage = document.getElementById("popupMessage");
+
+    uploadButton.addEventListener("click", () => {
+      const name = document.getElementById("name").value.trim();
+      const screenshotInput = document.getElementById("screenshot");
+      const file = screenshotInput.files[0];
+
+      if (!name || !file) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      // Convert the uploaded image to a base64 string
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const base64Image = e.target.result;
+
+        // Save data in localStorage
+        const data = JSON.parse(localStorage.getItem("adminPanelData")) || [];
+        data.push({ name, screenshot: base64Image });
+        localStorage.setItem("adminPanelData", JSON.stringify(data));
+
+        // Show success popup
+        popupMessage.style.display = "block";
+        setTimeout(() => {
+          popupMessage.style.display = "none";
+        }, 3000);
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
